@@ -1,7 +1,7 @@
 from enum import Enum
 
-class OperationsEnum(str, Enum):
-        operation_plus = "+"
-        operation_minus = "-"
-        operation_multiply = "*"
-        operation_divide = "/"
+class OperatorEnum(str, Enum):
+        operator_plus = "+"
+        operator_minus = "-"
+        operator_multiply = "*"
+        operator_divide = "/"

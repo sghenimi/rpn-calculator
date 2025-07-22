@@ -1,12 +1,13 @@
 from typing import List, Any, Coroutine, Union
 
 import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 
 from src.rpn_calculator.models.responses import StackResponse
 from src.rpn_calculator.models.rpn_stack import RpnStack
 from src.rpn_calculator.models.stack_item import StackItem
-from src.rpn_calculator.models.operations_list import OperationsEnum
+from src.rpn_calculator.models.operations_list import OperatorEnum
+from src.rpn_calculator.services.operation_factory import get_operation
 
 app = FastAPI(title="RPN Calculator")
 
@@ -37,8 +38,14 @@ async def add_item(item: StackItem)-> StackResponse:
     return StackResponse(stack=calculator.get_current_stack())
 
 @app.post("/api/rpn/calculate")
-def calculate(operation: OperationsEnum):
-    pass
+def calculate(operator: OperatorEnum):
+    try:
+        operation = get_operation(operator.value)
+        operation.execute(calculator)
+        return StackResponse(stack=calculator.get_current_stack())
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":
     uvicorn.run(app=app, host="localhost", port=8000)

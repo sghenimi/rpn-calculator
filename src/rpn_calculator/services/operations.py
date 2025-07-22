@@ -22,7 +22,7 @@ class Addition(Operation):
         return res
 
 
-class Soustraction(Operation):
+class Substraction(Operation):
     def execute(self, rpn_stack: RpnStack) -> float:
         rpn_stack._is_valid_stack()
         a = rpn_stack.pop()
@@ -31,7 +31,7 @@ class Soustraction(Operation):
         rpn_stack.push(res)
         return res
 
-class Multiplications(Operation):
+class Multiplication(Operation):
     def execute(self, rpn_stack: RpnStack) -> float:
         rpn_stack._is_valid_stack()
         a = rpn_stack.pop()
