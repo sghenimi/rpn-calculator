@@ -39,6 +39,11 @@ async def add_item(item: StackItem)-> StackResponse:
 
 @app.post("/api/rpn/calculate")
 def calculate(operator: OperatorEnum):
+    """
+    Calculates the operation using the the specified operator
+    :param operator:
+    :return:
+    """
     try:
         operation = get_operation(operator.value)
         operation.execute(calculator)
@@ -46,6 +51,16 @@ def calculate(operator: OperatorEnum):
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+@app.delete("/api/rpn/clear", response_model=StackResponse)
+def clear():
+    """
+    Clears the stack and return an empty stack
+    :return:
+    """
+    calculator.clear()
+    return StackResponse(stack=calculator.get_current_stack())
+
 
 if __name__ == "__main__":
     uvicorn.run(app=app, host="localhost", port=8000)
